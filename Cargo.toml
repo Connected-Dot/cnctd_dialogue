@@ -1,10 +1,11 @@
 [package]
 name = "cnctd_dialogue"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Connected Dot Inc.", "Kyle Ebner <kyle@cnctd.world>"]
 description = "Custom dialog implementation"
 license = "MIT"
+repository = "https://github.com/Connected-Dot/cnctd_dialogue"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
