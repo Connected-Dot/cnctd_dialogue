@@ -102,7 +102,7 @@ impl Dialog {
 
     pub fn select_str(
         prompt: &str,
-        options: &[&str],
+        options: &Vec<&str>,
         default_index: Option<usize>,
         color: Option<Color>,
         is_bold: Option<bool>,
@@ -131,7 +131,7 @@ impl Dialog {
 
     pub fn multi_select_str(
         prompt: &str,
-        options: &[&str],
+        options: &Vec<&str>,
         checked: Option<Vec<&str>>,
         color: Option<Color>,
         is_bold: Option<bool>,
