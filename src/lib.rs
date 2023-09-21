@@ -99,4 +99,66 @@ impl Dialog {
 
         selected_indices.into_iter().map(|i| options[i].clone()).collect()
     }
+
+    pub fn select_str(
+        prompt: &str,
+        options: &[&str],
+        default_index: Option<usize>,
+        color: Option<Color>,
+        is_bold: Option<bool>,
+    ) -> String {
+        let default_index = default_index.unwrap_or(0);
+
+        let styled_prompt = if let Some(bold) = is_bold {
+            if bold {
+                prompt.color(color.unwrap_or(Color::Cyan)).bold().to_string()
+            } else {
+                prompt.color(color.unwrap_or(Color::Cyan)).to_string()
+            }
+        } else {
+            prompt.color(Color::Cyan).bold().to_string()
+        };
+
+        let selected_index = Select::new()
+            .with_prompt(styled_prompt)
+            .default(default_index)
+            .items(options)
+            .interact()
+            .unwrap();
+
+        options[selected_index].to_string()
+    }
+
+    pub fn multi_select_str(
+        prompt: &str,
+        options: &[&str],
+        checked: Option<Vec<&str>>,
+        color: Option<Color>,
+        is_bold: Option<bool>,
+    ) -> Vec<String> {
+        let items_checked: Vec<(&str, bool)> = options.iter().cloned()
+            .map(|s| {
+                let is_checked = checked.clone().map_or(false, |v| v.contains(&s));
+                (s, is_checked)
+            })
+            .collect();
+
+        let styled_prompt = if let Some(bold) = is_bold {
+            if bold {
+                prompt.color(color.unwrap_or(Color::Cyan)).bold().to_string()
+            } else {
+                prompt.color(color.unwrap_or(Color::Cyan)).to_string()
+            }
+        } else {
+            prompt.color(Color::Cyan).bold().to_string()
+        };
+
+        let selected_indices = MultiSelect::new()
+            .with_prompt(styled_prompt)
+            .items_checked(&items_checked)
+            .interact()
+            .unwrap();
+
+        selected_indices.into_iter().map(|i| options[i].to_string()).collect()
+    }
 }
