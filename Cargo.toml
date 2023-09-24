@@ -1,6 +1,6 @@
 [package]
 name = "cnctd_dialogue"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 authors = ["Connected Dot Inc.", "Kyle Ebner <kyle@cnctd.world>"]
 description = "Custom dialog implementation"
@@ -11,5 +11,5 @@ repository = "https://github.com/Connected-Dot/cnctd_dialogue"
 
 [dependencies]
 colored = "2.0.4"
-dialoguer = "0.10.4"
+dialoguer = "0.11.0"
 strum = "0.25.0"

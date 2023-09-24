@@ -26,10 +26,10 @@ impl Dialog {
             prompt.color(Color::Cyan).bold().to_string()
         };
 
-        input.with_prompt(styled_prompt);
+        input.clone().with_prompt(styled_prompt);
 
         if let Some(d) = default {
-            input.default(d);
+            input.clone().default(d);
         }
 
         input.interact().unwrap()
