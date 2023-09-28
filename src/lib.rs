@@ -15,7 +15,6 @@ impl Dialog {
         T: std::str::FromStr + Clone + ToString,
         <T as std::str::FromStr>::Err: ToString,
     {
-        let mut input = Input::new();
         let styled_prompt = if let Some(bold) = is_bold {
             if bold {
                 prompt.color(color.unwrap_or(Color::Cyan)).bold().to_string()
@@ -25,16 +24,17 @@ impl Dialog {
         } else {
             prompt.color(Color::Cyan).bold().to_string()
         };
-
-        input.clone().with_prompt(styled_prompt);
-
-        if let Some(d) = default {
-            input.clone().default(d);
-        }
-
+    
+        let input = if let Some(d) = default {
+            Input::new().with_prompt(styled_prompt).default(d)
+        } else {
+            Input::new().with_prompt(styled_prompt)
+        };
+    
         input.interact().unwrap()
     }
-
+    
+    
     pub fn select<T: Clone + std::fmt::Display + IntoEnumIterator + PartialEq>(
         prompt: &str,
         default: Option<T>,
@@ -107,8 +107,13 @@ impl Dialog {
         color: Option<Color>,
         is_bold: Option<bool>,
     ) -> String {
+        let mut options = options.clone();  // Clone to make it mutable
         let default_index = default_index.unwrap_or(0);
-
+    
+        // Reorder the array so the default item is first
+        let default_item = options.remove(default_index);
+        options.insert(0, default_item);
+    
         let styled_prompt = if let Some(bold) = is_bold {
             if bold {
                 prompt.color(color.unwrap_or(Color::Cyan)).bold().to_string()
@@ -118,16 +123,17 @@ impl Dialog {
         } else {
             prompt.color(Color::Cyan).bold().to_string()
         };
-
+    
         let selected_index = Select::new()
             .with_prompt(styled_prompt)
-            .default(default_index)
-            .items(options)
+            .default(0)  // Default index is now 0
+            .items(&options)
             .interact()
             .unwrap();
-
+    
         options[selected_index].to_string()
     }
+    
 
     pub fn multi_select_str(
         prompt: &str,
